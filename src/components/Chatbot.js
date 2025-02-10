@@ -24,7 +24,14 @@ const Chatbot = ({ hotel, onLogout }) => {
     const [waitingForRoomConfirmation, setWaitingForRoomConfirmation] = useState(false); 
     const chatEndRef = useRef(null);
     const [waitingForGuestConfirmation, setWaitingForGuestConfirmation] = useState(false);
-
+    const [waitingForBookingConfirmation, setWaitingForBookingConfirmation] = useState(false);
+    const [waitingForContactInfo, setWaitingForContactInfo] = useState(false);
+    const [contactStep, setContactStep] = useState(0); // 0: name, 1: email, 2: phone
+    const [contactInfo, setContactInfo] = useState({
+        name: '',
+        email: '',
+        phone: ''
+    });
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -162,8 +169,119 @@ const Chatbot = ({ hotel, onLogout }) => {
                     { sender: "bot", text: "Sorry, I didn't understand that. Please respond with 'Yes' or 'No'." }
                 ]);
             }
+        } else if (waitingForBookingConfirmation) {
+            if (userInput.toLowerCase() === 'yes') {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { 
+                        sender: "bot", 
+                        text: "Great! To complete your reservation, I'll need some information.\n\nFirst, please enter your full name:" 
+                    }
+                ]);
+                setWaitingForBookingConfirmation(false);
+                setWaitingForContactInfo(true);
+                setContactStep(0);
+                setContactInfo({ name: '', email: '', phone: '' });
+            } else if (userInput.toLowerCase() === 'no') {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { 
+                        sender: "bot", 
+                        text: "No problem! Let's start over with the dates. Please select your check-in date." 
+                    }
+                ]);
+                // Reset all booking states
+                setWaitingForBookingConfirmation(false);
+                setWaitingForCheckIn(true);
+                setCheckInDate(null);
+                setCheckOutDate(null);
+                setSelectedRoomType(null);
+                setNumGuests(null);
+            } else {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { 
+                        sender: "bot", 
+                        text: "Please respond with 'Yes' or 'No' to confirm the booking details." 
+                    }
+                ]);
+            }
+        } else if (waitingForContactInfo) {
+            switch (contactStep) {
+                case 0: // Name
+                    setContactInfo(prev => ({ ...prev, name: userInput }));
+                    setMessages(prevMessages => [
+                        ...prevMessages,
+                        { sender: "user", text: userInput },
+                        { 
+                            sender: "bot", 
+                            text: "Thank you! Now, please enter your email address:" 
+                        }
+                    ]);
+                    setContactStep(1);
+                    setInput("");
+                    break;
+
+                case 1: // Email
+                    if (validateEmail(userInput)) {
+                        setContactInfo(prev => ({ ...prev, email: userInput }));
+                        setMessages(prevMessages => [
+                            ...prevMessages,
+                            { sender: "user", text: userInput },
+                            { 
+                                sender: "bot", 
+                                text: "Great! Finally, please enter your contact number:" 
+                            }
+                        ]);
+                        setContactStep(2);
+                        setInput("");
+                    } else {
+                        setMessages(prevMessages => [
+                            ...prevMessages,
+                            { sender: "user", text: userInput },
+                            { 
+                                sender: "bot", 
+                                text: "That doesn't look like a valid email address. Please try again:" 
+                            }
+                        ]);
+                    }
+                    break;
+
+                case 2: // Phone
+                    if (validatePhone(userInput)) {
+                        setContactInfo(prev => ({ ...prev, phone: userInput }));
+                        // Show final summary
+                        setMessages(prevMessages => [
+                            ...prevMessages,
+                            { sender: "user", text: userInput },
+                            { 
+                                sender: "bot", 
+                                text: "Perfect! Here's a summary of your reservation:\n\n" +
+                                      `📅 Check-in: ${checkInDate.toDateString()}\n` +
+                                      `📅 Check-out: ${checkOutDate.toDateString()}\n` +
+                                      `🏠 Room Type: ${selectedRoomType}\n` +
+                                      `👥 Number of Guests: ${numGuests}\n\n` +
+                                      `👤 Name: ${contactInfo.name}\n` +
+                                      `📧 Email: ${contactInfo.email}\n` +
+                                      `📱 Phone: ${userInput}\n\n` +
+                                      "Your reservation is being processed..."
+                            }
+                        ]);
+                        setWaitingForContactInfo(false);
+                        // Here you would call your API to save the reservation
+                    } else {
+                        setMessages(prevMessages => [
+                            ...prevMessages,
+                            { sender: "user", text: userInput },
+                            { 
+                                sender: "bot", 
+                                text: "That doesn't look like a valid phone number. Please enter a valid phone number:" 
+                            }
+                        ]);
+                    }
+                    break;
+            }
         }
-        
     };    
 
     const saveBookingToDatabase = async (checkIn, checkOut, roomType, guests) => {
@@ -187,7 +305,7 @@ const Chatbot = ({ hotel, onLogout }) => {
             num_guests: numGuests
         };
     
-        console.log("Sending request data:", requestData); // Debugging
+        console.log("Sending request data:", requestData);
     
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/check-availability`, {
@@ -197,7 +315,7 @@ const Chatbot = ({ hotel, onLogout }) => {
             });
     
             const text = await response.text();
-            console.log("Server response:", text); // Log raw response
+            console.log("Server response:", text);
     
             if (!response.ok) {
                 console.error("Server error:", response.status, response.statusText);
@@ -218,11 +336,28 @@ const Chatbot = ({ hotel, onLogout }) => {
                         { sender: "bot", text: "No rooms available for these dates." }
                     ]);
                 } else {
+                    const price = data[0].price;
                     const roomList = data.map(room => `Room ${room.id} (${room.room_type})`).join(", ");
+                    
+                    // First show available rooms
                     setMessages(prevMessages => [
                         ...prevMessages,
-                        { sender: "bot", text: `Available rooms: ${roomList}` }
+                        { 
+                            sender: "bot", 
+                            text: `📍 Available Rooms:\n${roomList}\n\n💰 Price per night: $${price}`
+                        },
+                        {
+                            sender: "bot",
+                            text: "Here are your booking details for confirmation:\n\n" +
+                                  `📅 Check-in: ${checkInDate.toDateString()}\n` +
+                                  `📅 Check-out: ${checkOutDate.toDateString()}\n` +
+                                  `🏠 Room Type: ${selectedRoomType}\n` +
+                                  `👥 Number of Guests: ${numGuests}\n` +
+                                  `💰 Price per night: $${price}\n\n` +
+                                  "Are these details correct? (Yes/No)"
+                        }
                     ]);
+                    setWaitingForBookingConfirmation(true);
                 }
             } catch (jsonError) {
                 console.error("Invalid JSON response:", text);
@@ -241,7 +376,8 @@ const Chatbot = ({ hotel, onLogout }) => {
     };
     
     const handleRoomTypeSelection = (type) => {
-        setSelectedRoomType(type);
+        const roomType = type.replace(' Room', '');
+        setSelectedRoomType(roomType);
         setMessages(prevMessages => [
             ...prevMessages,
             { sender: "user", text: type },
@@ -249,6 +385,16 @@ const Chatbot = ({ hotel, onLogout }) => {
         ]);
         setWaitingForRoomType(false);
         setWaitingForRoomConfirmation(true);
+    };
+
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        const re = /^\+?[\d\s-]{8,}$/;
+        return re.test(phone);
     };
 
     return (
@@ -335,9 +481,9 @@ const Chatbot = ({ hotel, onLogout }) => {
                 {/* Room Type Buttons */}
                 {waitingForRoomType && (
                     <div className="room-type-buttons">
-                        <button onClick={() => handleRoomTypeSelection("Standard")}>Standard Room</button>
-                        <button onClick={() => handleRoomTypeSelection("Family")}>Family Room</button>
-                        <button onClick={() => handleRoomTypeSelection("Suite")}>Suite Room</button>
+                        <button onClick={() => handleRoomTypeSelection("Standard Room")}>Standard Room</button>
+                        <button onClick={() => handleRoomTypeSelection("Family Room")}>Family Room</button>
+                        <button onClick={() => handleRoomTypeSelection("Suite Room")}>Suite Room</button>
                     </div>
                 )}
 
@@ -368,6 +514,28 @@ const Chatbot = ({ hotel, onLogout }) => {
                     <div className="confirmation-buttons">
                         <button onClick={() => processUserInput("Yes")}>Yes</button>
                         <button onClick={() => processUserInput("No")}>No</button>
+                    </div>
+                )}
+
+                {/* Booking Confirmation Buttons */}
+                {waitingForBookingConfirmation && (
+                    <div className="confirmation-buttons">
+                        <button onClick={() => processUserInput("Yes")}>Yes</button>
+                        <button onClick={() => processUserInput("No")}>No</button>
+                    </div>
+                )}
+
+                {/* Contact Information Input */}
+                {waitingForContactInfo && (
+                    <div className="contact-input">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Enter your contact information..."
+                            className="chat-input"
+                        />
+                        <button onClick={handleUserInput} className="send-button">Submit</button>
                     </div>
                 )}
 
