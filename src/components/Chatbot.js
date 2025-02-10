@@ -371,6 +371,17 @@ const Chatbot = ({ hotel, onLogout }) => {
                     </div>
                 )}
 
+                {/* Chatbox for user input */}
+                <div className="chat-input-container">
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Type your message here..."
+                        className="chat-input"
+                    />
+                    <button onClick={handleUserInput} className="send-button">Send</button>
+                </div>
             </div>
         </div>
     );

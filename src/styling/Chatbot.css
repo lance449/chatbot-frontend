@@ -29,11 +29,15 @@
 
 /* Chat Messages Box */
 .chat-box {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
 /* Messages */
@@ -61,33 +65,58 @@
 }
 
 /* Chat Input Box */
-.chat-input {
+.chat-input-container {
     display: flex;
-    padding: 10px;
-    background: #f9f9f9;
-    border-top: 1px solid #ddd;
+    margin-top: 10px;
 }
 
-.chat-input input {
+.chat-input {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 14px;
-    outline: none;
+    border-radius: 5px;
+    margin-right: 5px;
 }
 
-.chat-input button {
-    margin-left: 10px;
+.send-button {
     padding: 10px 15px;
-    background: #007bff;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
 }
 
-.chat-input button:hover {
-    background: #0056b3;
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.deals-button, .reservation-button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deals-button:hover, .reservation-button:hover {
+    background-color: #218838;
 }
