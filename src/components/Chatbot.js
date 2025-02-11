@@ -134,18 +134,46 @@ const Chatbot = ({ hotel, onLogout }) => {
                 setWaitingForRoomType(true);
             }
         } else if (waitingForGuests) {
-            if (Number(userInput) >= 1 && Number(userInput) <= 6) {
-                setNumGuests(userInput);
+            const guestNum = Number(userInput);
+            let minCapacity, maxCapacity;
+            
+            // Remove "Room" from selectedRoomType for comparison
+            const roomType = selectedRoomType.replace(' Room', '');
+            
+            // Set capacity ranges based on room type
+            switch(roomType) {
+                case 'Standard':
+                    minCapacity = 1;
+                    maxCapacity = 2;
+                    break;
+                case 'Family':
+                    minCapacity = 3;
+                    maxCapacity = 6;
+                    break;
+                case 'Suite':
+                    minCapacity = 2;
+                    maxCapacity = 6;
+                    break;
+                default:
+                    minCapacity = 1;
+                    maxCapacity = 2;
+            }
+
+            if (guestNum >= minCapacity && guestNum <= maxCapacity) {
+                setNumGuests(guestNum);
                 setMessages(prevMessages => [
                     ...prevMessages,
-                    { sender: "bot", text: `You have ${userInput} guest(s). Please confirm if this is correct. (Yes/No)` }
+                    { sender: "bot", text: `You have ${guestNum} guest(s). Please confirm if this is correct. (Yes/No)` }
                 ]);
                 setWaitingForGuests(false);
-                setWaitingForGuestConfirmation(true); // New state for guest confirmation
+                setWaitingForGuestConfirmation(true);
             } else {
                 setMessages(prevMessages => [
                     ...prevMessages,
-                    { sender: "bot", text: "Sorry, please enter a valid number of guests (1-6)." }
+                    { 
+                        sender: "bot", 
+                        text: `Sorry, the ${roomType} room can only accommodate ${minCapacity}-${maxCapacity} guests. Please enter a valid number of guests.` 
+                    }
                 ]);
             }
         } else if (waitingForGuestConfirmation) {
@@ -418,7 +446,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                     <div className="date-picker">
                         <DatePicker
                             selected={checkInDate}
-                            onChange={(date) => {
+                            onChange={(date) => {   
                                 if (date && date.getTime() !== checkInDate?.getTime()) {  // Check if the date is the same
                                     setCheckInDate(date);
                                     setMessages(prevMessages => [
