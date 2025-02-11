@@ -32,6 +32,7 @@ const Chatbot = ({ hotel, onLogout }) => {
         email: '',
         phone: ''
     });
+    const [showingFAQs, setShowingFAQs] = useState(false);
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -425,6 +426,67 @@ const Chatbot = ({ hotel, onLogout }) => {
         return re.test(phone);
     };
 
+    const handleCheckAvailability = () => {
+        setMessages(prevMessages => [
+            ...prevMessages,
+            { sender: "bot", text: "Please select your check-in date." }
+        ]);
+        setWaitingForCheckIn(true);
+        setShowingFAQs(false);
+    };
+
+    const handleReservation = () => {
+        setMessages(prevMessages => [
+            ...prevMessages,
+            { sender: "bot", text: "To make a reservation, I'll need some information. Please select your check-in date." }
+        ]);
+        setWaitingForCheckIn(true);
+        setShowingFAQs(false);
+    };
+
+    const handleFAQClick = (questionNumber) => {
+        let faqAnswer = '';
+        switch(questionNumber) {
+            case 1:
+                faqAnswer = "Yes, we are pet-friendly and welcome your furry companions for a small fee. Please contact us in advance for availability.";
+                break;
+            case 2:
+                faqAnswer = "Yes, we offer complimentary high-speed Wi-Fi in all rooms and public areas.";
+                break;
+            case 3:
+                faqAnswer = "Rooms come equipped with essentials like a flat-screen TV, air conditioning, complimentary toiletries, a mini-fridge, and more.";
+                break;
+            case 4:
+                faqAnswer = "Yes, we offer a loyalty program that allows you to earn points for every stay, which can be redeemed for discounts and rewards.";
+                break;
+            case 5:
+                faqAnswer = "Yes, we offer seasonal promotions and special packages. Check our website or contact us for current offers.";
+                break;
+            case 6:
+                faqAnswer = "Our hotel is conveniently located at Cabuyao";
+                break;
+            default:
+                faqAnswer = "Please select a valid question.";
+        }
+        
+        setMessages(prevMessages => [
+            ...prevMessages,
+            { sender: "user", text: `Question ${questionNumber}` },
+            { sender: "bot", text: faqAnswer }
+        ]);
+    };
+
+    const handleFAQs = () => {
+        setShowingFAQs(true);
+        setMessages(prevMessages => [
+            ...prevMessages,
+            { 
+                sender: "bot", 
+                text: "Please select a question you'd like to know more about:"
+            }
+        ]);
+    };
+
     return (
         <div className="chat-container">
             <div className="chat-header">
@@ -434,6 +496,23 @@ const Chatbot = ({ hotel, onLogout }) => {
                     <button onClick={onLogout}>Logout</button>
                 </div>
             </div>
+            
+            {/* Add Quick Action Buttons */}
+            <div className="quick-actions">
+                <button onClick={handleCheckAvailability} className="action-button">
+                    <span className="icon">🔍</span>
+                    Check Availability
+                </button>
+                <button onClick={handleReservation} className="action-button">
+                    <span className="icon">📅</span>
+                    Make Reservation
+                </button>
+                <button onClick={handleFAQs} className="action-button">
+                    <span className="icon">❓</span>
+                    FAQs
+                </button>
+            </div>
+
             <div className="chat-box">
                 {messages.map((msg, index) => (
                     <div key={index} className={`chat-message ${msg.sender}`}>
@@ -567,22 +646,45 @@ const Chatbot = ({ hotel, onLogout }) => {
                     </div>
                 )}
 
-                {/* Chatbox for user input */}
-                <div className="chat-input-container">
-                    <input
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type your message here..."
-                        className="chat-input"
-                    />
-                    <button onClick={handleUserInput} className="send-button">Send</button>
-                </div>
+                {showingFAQs && (
+                    <div className="faq-buttons">
+                        <button onClick={() => handleFAQClick(1)} className="faq-button">
+                            1. Do you accept pets?
+                        </button>
+                        <button onClick={() => handleFAQClick(2)} className="faq-button">
+                            2. Do you provide free Wi-Fi?
+                        </button>
+                        <button onClick={() => handleFAQClick(3)} className="faq-button">
+                            3. What amenities are included in the room?
+                        </button>
+                        <button onClick={() => handleFAQClick(4)} className="faq-button">
+                            4. Do you offer loyalty or reward programs?
+                        </button>
+                        <button onClick={() => handleFAQClick(5)} className="faq-button">
+                            5. Do you have any special packages or promotions?
+                        </button>
+                        <button onClick={() => handleFAQClick(6)} className="faq-button">
+                            6. Where is your hotel located?
+                        </button>
+                    </div>
+                )}
+
+                <div ref={chatEndRef} /> {/* Scroll anchor */}
+            </div>
+
+            {/* Chat input container outside the chat-box */}
+            <div className="chat-input-container">
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your message here..."
+                    className="chat-input"
+                />
+                <button onClick={handleUserInput} className="send-button">Send</button>
             </div>
         </div>
     );
-
-    
 };
 
 export default Chatbot;
