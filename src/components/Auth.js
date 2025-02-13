@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../styling/Auth.css";
 
 const Auth = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
