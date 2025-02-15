@@ -241,14 +241,9 @@ const Chatbot = ({ hotel, onLogout }) => {
                     setContactInfo(prev => ({ ...prev, name: userInput }));
                     setMessages(prevMessages => [
                         ...prevMessages,
-                        { sender: "user", text: userInput },
-                        { 
-                            sender: "bot", 
-                            text: "Thank you! Now, please enter your email address:" 
-                        }
+                        { sender: "bot", text: "Thank you! Now, please enter your email address:" }
                     ]);
                     setContactStep(1);
-                    setInput("");
                     break;
 
                 case 1: // Email
@@ -256,22 +251,13 @@ const Chatbot = ({ hotel, onLogout }) => {
                         setContactInfo(prev => ({ ...prev, email: userInput }));
                         setMessages(prevMessages => [
                             ...prevMessages,
-                            { sender: "user", text: userInput },
-                            { 
-                                sender: "bot", 
-                                text: "Great! Finally, please enter your contact number:" 
-                            }
+                            { sender: "bot", text: "Great! Finally, please enter your contact number:" }
                         ]);
                         setContactStep(2);
-                        setInput("");
                     } else {
                         setMessages(prevMessages => [
                             ...prevMessages,
-                            { sender: "user", text: userInput },
-                            { 
-                                sender: "bot", 
-                                text: "That doesn't look like a valid email address. Please try again:" 
-                            }
+                            { sender: "bot", text: "That doesn't look like a valid email address. Please try again:" }
                         ]);
                     }
                     break;
@@ -282,7 +268,6 @@ const Chatbot = ({ hotel, onLogout }) => {
                         // Show final summary
                         setMessages(prevMessages => [
                             ...prevMessages,
-                            { sender: "user", text: userInput },
                             { 
                                 sender: "bot", 
                                 text: "Perfect! Here's a summary of your reservation:\n\n" +
@@ -301,11 +286,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                     } else {
                         setMessages(prevMessages => [
                             ...prevMessages,
-                            { sender: "user", text: userInput },
-                            { 
-                                sender: "bot", 
-                                text: "That doesn't look like a valid phone number. Please enter a valid phone number:" 
-                            }
+                            { sender: "bot", text: "That doesn't look like a valid phone number. Please enter a valid phone number:" }
                         ]);
                     }
                     break;
@@ -427,6 +408,7 @@ const Chatbot = ({ hotel, onLogout }) => {
     };
 
     const handleCheckAvailability = () => {
+        resetAllStates();
         setMessages(prevMessages => [
             ...prevMessages,
             { sender: "bot", text: "Please select your check-in date." }
@@ -436,12 +418,37 @@ const Chatbot = ({ hotel, onLogout }) => {
     };
 
     const handleReservation = () => {
+        resetAllStates();
         setMessages(prevMessages => [
             ...prevMessages,
             { sender: "bot", text: "To make a reservation, I'll need some information. Please select your check-in date." }
         ]);
         setWaitingForCheckIn(true);
         setShowingFAQs(false);
+    };
+
+    const resetAllStates = () => {
+        setWaitingForCheckIn(false);
+        setWaitingForCheckOut(false);
+        setWaitingForConfirmation(false);
+        setWaitingForRoomType(false);
+        setWaitingForGuests(false);
+        setWaitingForRoomConfirmation(false);
+        setWaitingForGuestConfirmation(false);
+        setWaitingForBookingConfirmation(false);
+        setWaitingForContactInfo(false);
+        setContactStep(0);
+        setContactInfo({ name: '', email: '', phone: '' });
+        setCheckInDate(null);
+        setCheckOutDate(null);
+        setSelectedRoomType(null);
+        setNumGuests(null);
+    };
+
+    const resetContactInfo = () => {
+        setWaitingForContactInfo(false);
+        setContactStep(0);
+        setContactInfo({ name: '', email: '', phone: '' });
     };
 
     const handleFAQClick = (questionNumber) => {
@@ -673,16 +680,18 @@ const Chatbot = ({ hotel, onLogout }) => {
             </div>
 
             {/* Chat input container outside the chat-box */}
-            <div className="chat-input-container">
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message here..."
-                    className="chat-input"
-                />
-                <button onClick={handleUserInput} className="send-button">Send</button>
-            </div>
+            {!waitingForContactInfo && (
+                <div className="chat-input-container">
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Type your message here..."
+                        className="chat-input"
+                    />
+                    <button onClick={handleUserInput} className="send-button">Send</button>
+                </div>
+            )}
         </div>
     );
 };
