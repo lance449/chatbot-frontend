@@ -33,6 +33,7 @@ const Chatbot = ({ hotel, onLogout }) => {
         phone: ''
     });
     const [showingFAQs, setShowingFAQs] = useState(false);
+    const [waitingForFinalConfirmation, setWaitingForFinalConfirmation] = useState(false);
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -278,11 +279,11 @@ const Chatbot = ({ hotel, onLogout }) => {
                                       `👤 Name: ${contactInfo.name}\n` +
                                       `📧 Email: ${contactInfo.email}\n` +
                                       `📱 Phone: ${userInput}\n\n` +
-                                      "Your reservation is being processed..."
+                                      "Please confirm if all the details are correct. (Yes/No)"
                             }
                         ]);
                         setWaitingForContactInfo(false);
-                        // Here you would call your API to save the reservation
+                        setWaitingForFinalConfirmation(true);
                     } else {
                         setMessages(prevMessages => [
                             ...prevMessages,
@@ -290,6 +291,28 @@ const Chatbot = ({ hotel, onLogout }) => {
                         ]);
                     }
                     break;
+            }
+        } else if (waitingForFinalConfirmation) {
+            if (userInput.toLowerCase() === 'yes') {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { sender: "bot", text: "Thank you! Your reservation is being processed..." }
+                ]);
+                // Here you would call your API to save the reservation
+                saveBookingToDatabase(checkInDate, checkOutDate, selectedRoomType, numGuests);
+                setWaitingForFinalConfirmation(false);
+            } else if (userInput.toLowerCase() === 'no') {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { sender: "bot", text: "Let's start over. Please select your check-in date." }
+                ]);
+                resetAllStates();
+                setWaitingForCheckIn(true);
+            } else {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    { sender: "bot", text: "Please respond with 'Yes' or 'No' to confirm the details." }
+                ]);
             }
         }
     };    
@@ -650,6 +673,13 @@ const Chatbot = ({ hotel, onLogout }) => {
                             className="chat-input"
                         />
                         <button onClick={handleUserInput} className="send-button">Submit</button>
+                    </div>
+                )}
+
+                {waitingForFinalConfirmation && (
+                    <div className="confirmation-buttons">
+                        <button onClick={() => processUserInput("Yes")}>Yes</button>
+                        <button onClick={() => processUserInput("No")}>No</button>
                     </div>
                 )}
 
