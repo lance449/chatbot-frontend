@@ -4,16 +4,18 @@ import "./App.css";
 import HotelSelection from "./components/HotelSelection";
 import Auth from "./components/Auth";
 import Chatbot from "./components/Chatbot";
+import LandingPage from "./components/LandingPage";
+import HelpPage from "./components/HelpPage";
+import AboutPage from "./components/AboutPage";
 
 function App() {
   const [user, setUser] = useState(null);
   const [selectedHotel, setSelectedHotel] = useState(null);
 
-  // Load user data from localStorage on page load
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedFirstName = localStorage.getItem("first_name");
-    const storedHotel = JSON.parse(localStorage.getItem("selectedHotel")); // Get selected hotel from localStorage
+    const storedHotel = JSON.parse(localStorage.getItem("selectedHotel"));
 
     if (storedToken && storedFirstName) {
       setUser({ first_name: storedFirstName });
@@ -35,12 +37,12 @@ function App() {
     localStorage.removeItem("token");
     setUser(null);
     setSelectedHotel(null);
-    localStorage.removeItem("selectedHotel"); // Remove selected hotel data on logout
+    localStorage.removeItem("selectedHotel");
   };
 
   const handleHotelSelection = (hotel) => {
     setSelectedHotel(hotel);
-    localStorage.setItem("selectedHotel", JSON.stringify(hotel)); // Store hotel data in localStorage
+    localStorage.setItem("selectedHotel", JSON.stringify(hotel));
   };
 
   return (
@@ -48,29 +50,22 @@ function App() {
       <div className="App">
         <main>
           <Routes>
-            <Route path="/" element={
-              !user ? (
-                <Auth onLogin={handleLogin} />
-              ) : selectedHotel ? (
-                <Chatbot hotel={selectedHotel} onLogout={handleLogout} />
-              ) : (
-                <Navigate to="/hotel-selection" />
-              )
-            } />
-
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/auth" element={<Auth onLogin={handleLogin} />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/help" element={<HelpPage />} />
             <Route path="/hotel-selection" element={
               user ? (
                 <HotelSelection setHotel={handleHotelSelection} onLogout={handleLogout} />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/auth" />
               )
             } />
-
             <Route path="/chatbot" element={
               user && selectedHotel ? (
                 <Chatbot hotel={selectedHotel} onLogout={handleLogout} />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/auth" />
               )
             } />
           </Routes>

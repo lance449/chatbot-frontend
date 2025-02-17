@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+.landing-page {
+  text-align: center;
+  padding: 50px;
+}
+
+.landing-page nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.landing-page nav ul li {
+  display: inline;
+  margin: 0 10px;
+}
+
+.landing-page nav ul li.auth-link {
+  margin-left: auto;
+}
+
+.landing-page nav ul li .logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 24px;
+  color: #000;
+  text-decoration: none;
+}
+
+.landing-page .landing-content {
+  margin-top: 50px;
+}
+
+.landing-page .start-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
