@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #F2F2F2; /* Pale Gray background */
+  background-color: #f2f2f2; /* Pale Gray background */
   min-height: 100vh;
   display: flex;
   flex-direction: column;

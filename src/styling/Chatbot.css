@@ -357,7 +357,7 @@
     padding: 12px 25px;
     border: none;
     border-radius: 25px;
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background: linear-gradient(135deg, #D8BFD8, #C3A2FF); /* Soft lavender to light purple gradient */
     color: white;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -366,13 +366,13 @@
 }
 
 .room-type-buttons button:hover {
-    background: linear-gradient(135deg, #0056b3, #003f7f);
+    background: linear-gradient(135deg, #C3A2FF, #A88BEB); /* Light purple to muted grayish-purple gradient */
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 room-type-buttons button:active {
-    background: linear-gradient(135deg, #003f7f, #002a5c);
+    background: linear-gradient(135deg, #A88BEB, #6A0DAD); /* Muted grayish-purple to deep purple gradient */
     transform: translateY(0);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
