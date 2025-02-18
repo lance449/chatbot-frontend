@@ -1,86 +1,78 @@
-/* General container */
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #4A90E2, #9013FE);
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Card styling */
-.auth-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-}
-
-.auth-card:hover {
-    transform: scale(1.02);
-}
-
-/* Title */
-.auth-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 1.5rem;
-}
-
-/* Form styling */
 .auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Input fields */
-.auth-input {
-    padding: 12px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
+.auth-form input {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: calc(100% - 50px); /* Make space for the eye icon */
 }
 
-.auth-input:focus {
-    border-color: #4A90E2;
-    box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+button {
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
-/* Submit button */
-.auth-button {
-    background: #4A90E2;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
+button:hover {
+  background-color: #0056b3;
 }
 
-.auth-button:hover {
-    background: #357ABD;
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 10px;
 }
 
-/* Switch button */
-.auth-switch {
-    margin-top: 15px;
-    background: none;
-    border: none;
-    color: #4A90E2;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: color 0.3s;
+.toggle-button {
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.auth-switch:hover {
-    color: #357ABD;
-    text-decoration: underline;
+.toggle-button:hover {
+  background-color: #f0f0f0;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 30px; /* Add padding to the right for the eye icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px; /* Align eye icon to the right inside the input */
+  top: 50%;
+  transform: translateY(-50%); /* Vertically center the icon */
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5); /* Clear black color for eye icon */
 }

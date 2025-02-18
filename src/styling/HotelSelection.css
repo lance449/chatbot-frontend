@@ -1,174 +1,101 @@
-/* Body Background */
-body {
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #8ec5fc);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    font-family: 'Poppins', sans-serif;
-}
-
-/* Gradient Animation */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Main Container */
+/* Container for hotel selection */
 .hotel-selection-container {
-    max-width: 1000px;
+    max-width: 1100px;  /* Increase max-width */
     margin: 50px auto;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.9);  /* Slightly transparent white */
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 18px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     text-align: center;
-    transition: box-shadow 0.3s ease-in-out;
 }
 
-.hotel-selection-container:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-    background: linear-gradient(135deg, #f0f0f0, #e3e3e3); /* Soft gradient background */
-}
-
-/* Unique Colors for Each Hotel */
-.hotel-card:nth-child(1) { background: #e3f2fd; } /* Light Blue - Hotel A */
-.hotel-card:nth-child(2) { background: #ffebee; } /* Light Red - Hotel B */
-.hotel-card:nth-child(3) { background: #e8f5e9; } /* Light Green - Hotel C */
-
-
-
-/* Title */
-h2 {
-    color: #2c3e50;
-    font-size: 32px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
-/* Hotel Cards */
+/* Hotel Card */
 .hotel-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background: linear-gradient(135deg, #ffffff, #f8f9fa);
-    padding: 18px;
-    margin: 12px 0;
+    padding: 20px;  /* Increase padding */
+    margin: 18px 0;  /* Increase margin */
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);  /* Larger shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 18px;  /* Increase font size */
 }
 
 .hotel-card:hover {
-    transform: scale(1.04);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    transform: scale(1.06);  /* Slightly larger scale */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 /* Hotel Image */
 .hotel-card img {
-    width: 85px;
-    height: 85px;
+    width: 100px;  /* Increase image size */
+    height: 100px;
     object-fit: cover;
-    border-radius: 10px;
-    border: 3px solid #007bff;
+    border-radius: 12px;
 }
 
 /* Hotel Name */
 .hotel-card h3 {
     flex-grow: 1;
-    text-align: left;
-    margin-left: 20px;
-    font-size: 22px;
+    margin-left: 24px;  /* Increase margin */
+    font-size: 24px;  /* Increase font size */
     color: #34495e;
     font-weight: bold;
 }
 
-/* Buttons */
-/* Adjusted button size */
+/* Button Styling */
 .hotel-card button {
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background: linear-gradient(135deg, #ff9800, #e68900);
+    padding: 8px 16px;  /* Increase button size */
+    font-size: 16px;  /* Increase button font size */
     color: #fff;
     border: none;
-    padding: 6px 14px; /* Smaller padding */
-    border-radius: 6px; /* Slightly smaller rounded corners */
+    border-radius: 8px;  /* Increase border radius */
     cursor: pointer;
-    font-size: 14px; /* Reduced font size */
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .hotel-card button:hover {
-    background: linear-gradient(135deg, #0056b3, #003d82);
-    transform: scale(1.08); /* Slight hover effect */
-}
-
-/* Smaller "Details" button */
-.hotel-card .details-btn {
-    background: linear-gradient(135deg, #ff9800, #e68900);
-    padding: 6px 12px; /* Reduced padding */
-    font-size: 14px;
-}
-
-.hotel-card .details-btn:hover {
     background: linear-gradient(135deg, #e68900, #d17700);
+    transform: scale(1.05);  /* Slightly larger scale */
 }
 
-/* Centering the button container */
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* Keep spacing between buttons */
-    margin-top: 10px;
-}
-
-
-/* Hotel Details Section */
+/* Hotel Details Section (Modal) */
 .hotel-details {
-    margin-top: 25px;
-    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;  /* Increase width */
+    max-width: 600px;  /* Increase max-width */
+    padding: 20px 30px;  /* Increase padding */
     background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
-    text-align: left;
+    border-radius: 15px;  /* Increase border radius */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);  /* Larger shadow */
+    z-index: 1000;
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Hotel Details Title */
-.hotel-details h3 {
-    color: #2c3e50;
-    font-size: 24px;
-    margin-bottom: 12px;
-    font-weight: bold;
-}
-
-/* Description */
-.hotel-details p {
-    font-size: 17px;
-    color: #555;
-    line-height: 1.6;
-}
-
-/* Close Button */
+/* Close button styling */
 .hotel-details button {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
     color: #fff;
     border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
+    padding: 12px 18px;  /* Increase padding */
+    border-radius: 8px;  /* Increase border radius */
     cursor: pointer;
-    margin-top: 12px;
-    font-size: 15px;
+    margin-top: 16px;  /* Increase margin-top */
+    font-size: 16px;  /* Increase font size */
     font-weight: bold;
     transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .hotel-details button:hover {
     background: linear-gradient(135deg, #c0392b, #a83224);
-    transform: scale(1.07);
+    transform: scale(1.1);  /* Larger scale */
 }
-
-.hotel-logo {
-    width: 90px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-    

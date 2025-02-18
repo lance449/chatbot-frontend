@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
 import "../styling/Auth.css";
 
 const Auth = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);  // State to toggle password visibility
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     email: "",
     password: "",
+    confirmPassword: "",  // State for confirm password field
   });
-
-  const navigate = useNavigate();  // Initialize the navigate function
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  axios.defaults.withCredentials = true; // Ensure credentials are included globally
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,55 +40,120 @@ const Auth = ({ onLogin }) => {
             alert("Login successful!");
             navigate('/hotel-selection');  // Navigate to HotelSelection after login
         } else {
-            alert(res.data.message); // Show message after registration
+            setErrorMessage(res.data.message || "Unexpected error. Please try again.");
         }
     } catch (error) {
         console.error("Error:", error.response?.data || error.message);
-        alert(error.response?.data?.message || "An error occurred. Please try again.");
+        setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
     }
-};
+  };
 
   return (
-    <div>
-      <h2>{isRegister ? "Register" : "Login"}</h2>
-      <form onSubmit={handleSubmit}>
-        {isRegister && (
-          <>
-            <input
-              type="text"
-              name="first_name"
-              placeholder="First Name"
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="last_name"
-              placeholder="Last Name"
-              onChange={handleChange}
-              required
-            />
-          </>
+    <div className="auth-container">
+      <header>
+        <h1 className="heading">{isRegister ? "Register" : "Login"}</h1>
+        <p className="title">{isRegister ? "Create your account" : "Sign in to your account"}</p>
+      </header>
+      <div className="tab-bar">
+        <button className={`tab ${!isRegister ? "active" : ""}`} onClick={() => setIsRegister(false)}>Login</button>
+        <button className={`tab ${isRegister ? "active" : ""}`} onClick={() => setIsRegister(true)}>Register</button>
+      </div>
+      <div className="form-section">
+        {!isRegister ? (
+          <div className="login-box">
+            <form onSubmit={handleSubmit} className="auth-form">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                className="ele"
+                required
+              />
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  className="ele"
+                  required
+                />
+                <span
+                  className="eye-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  👁️
+                </span>
+              </div>
+              <button type="submit" className="clkbtn">Login</button>
+            </form>
+          </div>
+        ) : (
+          <div className="signup-box">
+            <form onSubmit={handleSubmit} className="auth-form">
+              <input
+                type="text"
+                name="first_name"
+                placeholder="First Name"
+                onChange={handleChange}
+                className="ele"
+                required
+              />
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Last Name"
+                onChange={handleChange}
+                className="ele"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                className="ele"
+                required
+              />
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  className="ele"
+                  required
+                />
+                <span
+                  className="eye-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  👁️
+                </span>
+              </div>
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  onChange={handleChange}
+                  className="ele"
+                  required
+                />
+                <span
+                  className="eye-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  👁️
+                </span>
+              </div>
+              <button type="submit" className="clkbtn">Register</button>
+            </form>
+          </div>
         )}
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">{isRegister ? "Register" : "Login"}</button>
-      </form>
-      <button onClick={() => setIsRegister(!isRegister)}>
-        {isRegister ? "Switch to Login" : "Switch to Register"}
-      </button>
+      </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
 };

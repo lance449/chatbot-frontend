@@ -19,7 +19,25 @@ const LandingPage = () => {
       </nav>
       <div className="landing-content">
         <h1>Welcome to Resbot</h1>
+        <p>Your ultimate solution for hassle-free reservations.</p>
         <Link to="/auth" className="start-button">Get Started</Link>
+      </div>
+      <div className="features">
+        <h2>Why Choose Resbot?</h2>
+        <div className="feature-list">
+          <div className="feature-item">
+            <h3>Easy to Use</h3>
+            <p>Our user-friendly interface makes booking a breeze.</p>
+          </div>
+          <div className="feature-item">
+            <h3>Secure</h3>
+            <p>Your data is safe with our top-notch security measures.</p>
+          </div>
+          <div className="feature-item">
+            <h3>24/7 Support</h3>
+            <p>We're here to help you anytime, anywhere.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

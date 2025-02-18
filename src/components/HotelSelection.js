@@ -4,9 +4,9 @@ import "../styling/HotelSelection.css";
 
 
 const hotels = [
-    { id: 1, name: 'Hotel A', logo: '/hotel-a.png', details: "Located in the heart of the city, Hotel A offers luxury and comfort for travelers." },
-    { id: 2, name: 'Hotel B', logo: '/hotel-b.png', details: "A beachfront paradise with stunning ocean views and world-class amenities." },
-    { id: 3, name: 'Hotel C', logo: '/hotel-c.png', details: "A cozy retreat near nature, perfect for a peaceful and relaxing stay." }
+    { id: 1, name: 'YES Hotel', logo: '/hotel-a.png', details: "Yes Hotel Cabuyao Laguna is a modern hotel located in Divimall, National Road, Barangay Pulo, Cabuyao, 4025 Laguna, Philippines. It offers a selection of stylish rooms and suites equipped with modern amenities designed to provide a relaxing and enjoyable stay. " },
+    { id: 2, name: 'Rizmy Hotel', logo: '/hotel-b.png', details: "Rizmy Hotel, also known as Rizmy Apartment Hotel, is a 3-star accommodation located in Cabuyao, Laguna, Philippines. Situated along Pulo Diezmo Road, it offers convenient access to various attractions in the area." },
+    { id: 3, name: 'Asia Novo Boutique Hotel', logo: '/hotel-c.png', details: "Asia Novo Boutique Hotel in Cabuyao, Laguna, Philippines, is a 1-star establishment offering comfortable accommodations at affordable rates. The hotel is conveniently located at 310 LE J.P. Rizal St., Barangay Uno, Cabuyao City, Laguna, 4025, Philippines." }
 ];
 
 
