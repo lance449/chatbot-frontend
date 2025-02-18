@@ -47,7 +47,7 @@
 
 /* Button Styling */
 .hotel-card button {
-    background: linear-gradient(135deg, #ff9800, #e68900);
+    background: linear-gradient(135deg, #5D3FD3, #e68900);
     padding: 8px 16px;  /* Increase button size */
     font-size: 16px;  /* Increase button font size */
     color: #fff;
@@ -59,7 +59,7 @@
 }
 
 .hotel-card button:hover {
-    background: linear-gradient(135deg, #e68900, #d17700);
+    background: linear-gradient(135deg, #5D3FD3, #5D3FD3);
     transform: scale(1.05);  /* Slightly larger scale */
 }
 

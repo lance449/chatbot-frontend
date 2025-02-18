@@ -467,6 +467,20 @@ room-type-buttons button:active {
     background: none;
     text-align: left;
     cursor: pointer;
+    color: #495057; /* Default color for buttons */
+}
+
+.profile-menu button:hover {
+    background: #f1f1f1;
+    color: #6A0DAD; /* Change color on hover */
+}
+
+.profile-menu .settings-button {
+    color: #007bff; /* Specific color for settings button */
+}
+
+.profile-menu .logout-button {
+    color: #dc3545; /* Specific color for logout button */
 }
 
 .profile-menu button:hover {

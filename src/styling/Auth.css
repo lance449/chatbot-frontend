@@ -3,8 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  max-width: 400px;
+  padding: 50px; /* Adjust padding */
+  max-width: 800px; /* Adjust max-width */
   margin: 0 auto;
   background-color: #fff;
   border-radius: 8px;
@@ -19,16 +19,16 @@
 
 .auth-form input {
   margin: 10px 0;
-  padding: 10px;
+  padding: 15px; /* Adjust padding */
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  width: calc(100% - 50px); /* Make space for the eye icon */
+  width: calc(100% - 30px); /* Adjust width */
 }
 
 button {
-  padding: 10px;
-  background-color: #007bff;
+  padding: 15px; /* Adjust padding */
+  background-color: #D8BFD8;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -37,7 +37,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #5D3FD3;
 }
 
 .error-message {
@@ -65,7 +65,7 @@ button:hover {
 }
 
 .password-input input {
-  padding-right: 30px; /* Add padding to the right for the eye icon */
+  padding-right: 40px; /* Adjust padding to the right for the eye icon */
 }
 
 .eye-icon {
