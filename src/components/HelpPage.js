@@ -1,31 +1,56 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import "../styling/HelpPage.css";
 
 const HelpPage = () => {
   return (
     <div className="help-page">
-      <h1>Help</h1>
-      <p>Welcome to the ResBot Help Section. Here you'll find answers to common questions and guidance on using the system.</p>
-      
-      <h2>Frequently Asked Questions (FAQ)</h2>
-      <p><strong>How do I make a reservation?</strong> Simply log in, select a hotel, and chat with ResBot to specify your check-in/check-out dates, room type, and number of guests. After confirming availability, your reservation will be confirmed instantly.</p>
-      <p><strong>Can I change my reservation?</strong> Currently, changes to your reservation can be made by contacting customer support directly.</p>
-      <p><strong>What happens if my selected room is unavailable?</strong> If the room is unavailable for your dates, ResBot will suggest available options based on your preferences.</p>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/" className="logo">
+              RESBOT
+            </Link>
+          </li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/help" className="active-link">Help</Link></li>
+          <li className="auth-link"><Link to="/auth">Login/Register</Link></li>
+        </ul>
+      </nav>
 
-      <h2>Booking Process</h2>
-      <p>To make a reservation, follow these simple steps:</p>
-      <p>1. Sign up or log in to your account.</p>
-      <p>2. Select the hotel of your choice.</p>
-      <p>3. Provide your check-in and check-out dates, room type, and number of guests.</p>
-      <p>4. ResBot will confirm room availability and complete your booking.</p>
+      <div className="help-content">
+        <h1>Help Center</h1>
+        <p>Welcome to the ResBot Help Section. Here you will find answers to frequently asked questions and step-by-step guidance on using the platform.</p>
+      </div>
 
-      <h2>Account Management</h2>
-      <p>For account-related assistance, you can:</p>
-      <p>Create a new account or log in using your credentials.</p>
-      <p>Recover your password if you forget it.</p>
-      <p>Update your profile with your personal information.</p>
+      <div className="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div className="faq-item">
+          <h3>How do I make a reservation?</h3>
+          <p>Simply log in, choose a hotel, and interact with ResBot to select your check-in/check-out dates, room type, and the number of guests. ResBot will instantly confirm availability and finalize your booking.</p>
+        </div>
+        <div className="faq-item">
+          <h3>Can I change my reservation?</h3>
+          <p>To modify your reservation, please contact customer support directly for assistance.</p>
+        </div>
+        <div className="faq-item">
+          <h3>What if my room is unavailable?</h3>
+          <p>If your selected room is not available, ResBot will recommend alternative options based on your preferences.</p>
+        </div>
+      </div>
 
-      <h2>Contact Support</h2>
-      <p>If you need further assistance, please contact our support team at melendrez23@gmail.com, or reach us through the chat option within the app.</p>
+      <div className="booking-process">
+        <h2>Booking Process</h2>
+        <div className="booking-card">
+          <ul>
+            <li>Sign up or log in to your account.</li>
+            <li>Select the hotel of your choice.</li>
+            <li>Enter your check-in and check-out dates, room type, and the number of guests.</li>
+            <li>Confirm room availability, and your booking will be completed automatically.</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
   );
 };
