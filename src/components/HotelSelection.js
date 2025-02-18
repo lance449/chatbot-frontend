@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import "../styling/HotelSelection.css";
+
 
 const hotels = [
     { id: 1, name: 'Hotel A', logo: '/hotel-a.png', details: "Located in the heart of the city, Hotel A offers luxury and comfort for travelers." },
     { id: 2, name: 'Hotel B', logo: '/hotel-b.png', details: "A beachfront paradise with stunning ocean views and world-class amenities." },
     { id: 3, name: 'Hotel C', logo: '/hotel-c.png', details: "A cozy retreat near nature, perfect for a peaceful and relaxing stay." }
 ];
+
+
 
 const HotelSelection = ({ setHotel }) => {
     const [selectedHotel, setSelectedHotel] = useState(null);
