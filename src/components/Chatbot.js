@@ -135,10 +135,9 @@ const Chatbot = ({ hotel, onLogout }) => {
         } else if (waitingForGuests) {
             const guestNum = Number(userInput);
             let minCapacity, maxCapacity;
-            
 
             const roomType = selectedRoomType.replace(' Room', '');
-            
+
             // Set capacity ranges based on room type
             switch(roomType) {
                 case 'Standard':

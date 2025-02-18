@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 const Auth = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
@@ -9,6 +10,8 @@ const Auth = ({ onLogin }) => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();  // Initialize the navigate function
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,6 +37,7 @@ const Auth = ({ onLogin }) => {
             localStorage.setItem("first_name", res.data.user.first_name);
             onLogin(res.data.user);
             alert("Login successful!");
+            navigate('/hotel-selection');  // Navigate to HotelSelection after login
         } else {
             alert(res.data.message); // Show message after registration
         }
@@ -42,8 +46,6 @@ const Auth = ({ onLogin }) => {
         alert(error.response?.data?.message || "An error occurred. Please try again.");
     }
 };
-
-
 
   return (
     <div>
