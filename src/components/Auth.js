@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";  
 import "../styling/Auth.css";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 const Auth = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
