@@ -6,7 +6,7 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: #E6E6FA; /* Pale lilac background */
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -18,7 +18,7 @@
 
 /* Chat Header */
 .chat-header {
-    background: #007bff;
+    background: #6A0DAD;
     color: white;
     padding: 15px;
     text-align: center;
@@ -32,7 +32,7 @@
     flex: 1;
     overflow-y: auto;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #E6E6FA; /* Pale lilac background */
     display: flex;
     flex-direction: column;
 }
@@ -48,12 +48,12 @@
 }
 
 .chat-box::-webkit-scrollbar-thumb {
-    background: #007bff;
+    background: #6A0DAD;
     border-radius: 4px;
 }
 
 .chat-box::-webkit-scrollbar-thumb:hover {
-    background: #0056b3;
+    background: #5D3FD3;
 }
 
 /* Messages */
@@ -69,13 +69,14 @@
 
 /* Bot Message */
 .chat-message.bot {
-    background: #f1f1f1;
+    background: #E6E6FA; /* Pale lilac background */
+    color: #4B0082;
     align-self: flex-start;
 }
 
 /* User Message */
 .chat-message.user {
-    background: #007bff;
+    background: #C3A2FF; /* Light purple background */
     color: white;
     align-self: flex-end;
 }
@@ -83,7 +84,7 @@
 /* Chat Input Box */
 .chat-input-container {
     padding: 10px;
-    background: #f9f9f9;
+    background: #E0BBE4; /* Soft lavender background */
     border-top: 1px solid #ddd;
     display: flex;
     gap: 10px;
@@ -94,19 +95,23 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    color: #4B0082; /* Dark violet text */
 }
 
 .send-button {
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #D8BFD8; /* Soft lavender background */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .send-button:hover {
-    background-color: #0056b3;
+    background-color: #5D3FD3; /* Darker violet background */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .floating-buttons {
@@ -128,15 +133,18 @@
     flex: 1;
     margin: 0 5px;
     padding: 10px 15px;
-    background-color: #28a745;
+    background-color: #D8BFD8; /* Soft lavender background */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .deals-button:hover, .reservation-button:hover {
-    background-color: #218838;
+    background-color: #5D3FD3; /* Darker violet background */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .deals-container {
@@ -161,7 +169,7 @@
 
 .deal-button:hover {
     background: #f5f5f5;
-    border-color: #007bff;
+    border-color: #6A0DAD;
 }
 
 .deal-button.standard-rate {
@@ -195,16 +203,43 @@
     border-radius: 4px;
     border: none;
     cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.confirm-yes {
-    background: #28a745;
+.confirmation-buttons .confirm-yes {
+    background: linear-gradient(135deg, #28a745, #218838);
     color: white;
 }
 
-.confirm-no {
-    background: #dc3545;
+.confirmation-buttons .confirm-yes:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-buttons .confirm-yes:active {
+    background: linear-gradient(135deg, #1e7e34, #155d27);
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-buttons .confirm-no {
+    background: linear-gradient(135deg, #dc3545, #c82333);
     color: white;
+}
+
+.confirmation-buttons .confirm-no:hover {
+    background: linear-gradient(135deg, #c82333, #bd2130);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-buttons .confirm-no:active {
+    background: linear-gradient(135deg, #bd2130, #a71d2a);
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Adjust the messages container to allow space for input */
@@ -230,7 +265,7 @@
     padding: 8px 15px;
     border: none;
     border-radius: 20px;
-    background: #007bff;
+    background: #D8BFD8; /* Soft lavender background */
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -238,7 +273,7 @@
 }
 
 .action-button:hover {
-    background: #0056b3;
+    background: #5D3FD3; /* Darker violet background */
     transform: translateY(-2px);
 }
 
@@ -260,7 +295,7 @@
 
 .faq-question {
     font-weight: bold;
-    color: #007bff;
+    color: #6A0DAD;
     margin-bottom: 5px;
 }
 
@@ -294,12 +329,12 @@
 
 .faq-button:hover {
     background: #e9ecef;
-    border-color: #007bff;
+    border-color: #6A0DAD;
     transform: translateX(5px);
 }
 
 .faq-button:active {
-    background: #007bff;
+    background: #6A0DAD;
     color: white;
 }
 
@@ -309,4 +344,131 @@
 .room-type-buttons,
 .guest-input {
     margin: 10px 0;
+}
+
+/* Room Type Buttons */
+.room-type-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.room-type-buttons button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.room-type-buttons button:hover {
+    background: linear-gradient(135deg, #0056b3, #003f7f);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+room-type-buttons button:active {
+    background: linear-gradient(135deg, #003f7f, #002a5c);
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Confirmation Buttons */
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.confirmation-buttons button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-buttons .confirm-yes {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+}
+
+.confirmation-buttons .confirm-yes:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-buttons .confirm-yes:active {
+    background: linear-gradient(135deg, #1e7e34, #155d27);
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-buttons .confirm-no {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+}
+
+.confirmation-buttons .confirm-no:hover {
+    background: linear-gradient(135deg, #c82333, #bd2130);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-buttons .confirm-no:active {
+    background: linear-gradient(135deg, #bd2130, #a71d2a);
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Section */
+.profile-section {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: inline-block;
+    z-index: 1000;  /* Ensures it's above other elements */
+}
+
+.profile-icon {
+    font-size: 30px;
+    cursor: pointer;
+    background: #6A0DAD; /* Deep purple background */
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.profile-menu {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.profile-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.profile-menu button:hover {
+    background: #f1f1f1;
 }

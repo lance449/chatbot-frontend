@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { FaUserCircle } from "react-icons/fa";
 import "../styling/Chatbot.css"; // Ensure correct path
 
 const Chatbot = ({ hotel, onLogout }) => {
     const firstName = localStorage.getItem("first_name") || "Guest";
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+    const toggleProfileMenu = () => {
+        setShowProfileMenu(!showProfileMenu);
+    };
 
     const [messages, setMessages] = useState([
         { sender: "bot", text: `Welcome, ${firstName}, to ${hotel.name}! 😊 How can I assist you today?` },
@@ -530,210 +536,215 @@ const Chatbot = ({ hotel, onLogout }) => {
     };
 
     return (
-        <div className="chat-container">
-            <div className="chat-header">
-                {hotel.name} Chatbot
-                <div className="header-buttons">
-                    <button onClick={() => alert("Settings Page Coming Soon!")}>Settings</button>
-                    <button onClick={onLogout}>Logout</button>
+        <div>
+            <div className="profile-section">
+                <FaUserCircle className="profile-icon" onClick={toggleProfileMenu} />
+                {showProfileMenu && (
+                    <div className="profile-menu">
+                        <button onClick={() => alert("Settings Page Coming Soon!")}>Settings</button>
+                        <button onClick={onLogout}>Logout</button>
+                    </div>
+                )}
+            </div>
+            <div className="main-container">
+                <div className="chat-container">
+                    <div className="chat-header">
+                        {hotel.name} Chatbot
+                    </div>
+                    <div className="quick-actions">
+                        <button onClick={handleCheckAvailability} className="action-button">
+                            <span className="icon">🔍</span>
+                            Check Availability
+                        </button>
+                        <button onClick={handleReservation} className="action-button">
+                            <span className="icon">📅</span>
+                            Make Reservation
+                        </button>
+                        <button onClick={handleFAQs} className="action-button">
+                            <span className="icon">❓</span>
+                            FAQs
+                        </button>
+                    </div>
+                    <div className="chat-box">
+                        {messages.map((msg, index) => (
+                            <div key={index} className={`chat-message ${msg.sender}`}>
+                                {msg.text}
+                            </div>
+                        ))}
+                        {/* Check-in Date Picker */}
+                        {waitingForCheckIn && (
+                            <div className="date-picker">
+                                <DatePicker
+                                    selected={checkInDate}
+                                    onChange={(date) => {   
+                                        if (date && date.getTime() !== checkInDate?.getTime()) {  // Check if the date is the same
+                                            setCheckInDate(date);
+                                            setMessages(prevMessages => [
+                                                ...prevMessages,
+                                                { sender: "user", text: `Check-in: ${date.toDateString()}` },
+                                                { sender: "bot", text: `Got it! Your check-in date is ${date.toDateString()}. Now, please select or enter your check-out date.` }
+                                            ]);
+                                            setCheckOutDate(null); // Reset check-out date when check-in is changed
+                                            setWaitingForCheckIn(false);
+                                            setWaitingForCheckOut(true);
+                                        } else {
+                                            setMessages(prevMessages => [
+                                                ...prevMessages,
+                                                { sender: "bot", text: "Please select a different check-in date." }
+                                            ]);
+                                        }
+                                    }}
+                                    placeholderText="Select check-in date"
+                                    minDate={new Date()} // Ensure future dates only
+                                />
+                            </div>
+                        )}
+
+                        {/* Check-out Date Picker */}
+                        {waitingForCheckOut && (
+                            <div className="date-picker">
+                                <DatePicker
+                                    selected={checkOutDate}
+                                    onChange={(date) => {
+                                        if (date && date.getTime() !== checkOutDate?.getTime()) {  // Check if the date is the same
+                                            setCheckOutDate(date);
+                                            setMessages(prevMessages => [
+                                                ...prevMessages,
+                                                { sender: "user", text: `Check-out: ${date.toDateString()}` },
+                                                { sender: "bot", text: `Got it! Your check-out date is ${date.toDateString()}. Please confirm if the dates are correct.` }
+                                            ]);
+                                            setWaitingForCheckOut(false);
+                                            setWaitingForConfirmation(true);
+                                        } else {
+                                            setMessages(prevMessages => [
+                                                ...prevMessages,
+                                                { sender: "bot", text: "Please select a different check-out date." }
+                                            ]);
+                                        }
+                                    }}
+                                    placeholderText="Select check-out date"
+                                    minDate={checkInDate || new Date()} // Ensure check-out is on or after check-in date
+                                />
+                            </div>
+                        )}
+
+                        {/* Confirmation for Dates */}
+                        {waitingForConfirmation && (
+                            <div className="confirmation-buttons">
+                                <button onClick={() => processUserInput("Yes")}>Yes</button>
+                                <button onClick={() => processUserInput("No")}>No</button>
+                            </div>
+                        )}
+
+                        {/* Room Type Buttons */}
+                        {waitingForRoomType && (
+                            <div className="room-type-buttons">
+                                <button onClick={() => handleRoomTypeSelection("Standard Room")}>Standard Room</button>
+                                <button onClick={() => handleRoomTypeSelection("Family Room")}>Family Room</button>
+                                <button onClick={() => handleRoomTypeSelection("Suite Room")}>Suite Room</button>
+                            </div>
+                        )}
+
+                        {waitingForRoomConfirmation && (
+                            <div className="confirmation-buttons">
+                                <button onClick={() => processUserInput("Yes")}>Yes</button>
+                                <button onClick={() => processUserInput("No")}>No</button>
+                            </div>
+                        )}
+
+                        {/* Number of Guests Input */}
+                        {waitingForGuests && (
+                            <div className="guest-input">
+                                <input
+                                    type="number"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Enter number of guests"
+                                    min="1"
+                                    max="6"
+                                />
+                                <button onClick={handleUserInput}>Submit</button>
+                            </div>
+                        )}
+
+                                        {/* Confirmation for Number of Guests */}
+                        {waitingForGuestConfirmation && (
+                            <div className="confirmation-buttons">
+                                <button onClick={() => processUserInput("Yes")}>Yes</button>
+                                <button onClick={() => processUserInput("No")}>No</button>
+                            </div>
+                        )}
+
+                        {/* Booking Confirmation Buttons */}
+                        {waitingForBookingConfirmation && (
+                            <div className="confirmation-buttons">
+                                <button onClick={() => processUserInput("Yes")}>Yes</button>
+                                <button onClick={() => processUserInput("No")}>No</button>
+                            </div>
+                        )}
+
+                        {/* Contact Information Input */}
+                        {waitingForContactInfo && (
+                            <div className="contact-input">
+                                <input
+                                    type="text"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Enter your contact information..."
+                                    className="chat-input"
+                                />
+                                <button onClick={handleUserInput} className="send-button">Submit</button>
+                            </div>
+                        )}
+
+                        {waitingForFinalConfirmation && (
+                            <div className="confirmation-buttons">
+                                <button onClick={() => processUserInput("Yes")}>Yes</button>
+                                <button onClick={() => processUserInput("No")}>No</button>
+                            </div>
+                        )}
+
+                        {showingFAQs && (
+                            <div className="faq-buttons">
+                                <button onClick={() => handleFAQClick(1)} className="faq-button">
+                                    1. Do you accept pets?
+                                </button>
+                                <button onClick={() => handleFAQClick(2)} className="faq-button">
+                                    2. Do you provide free Wi-Fi?
+                                </button>
+                                <button onClick={() => handleFAQClick(3)} className="faq-button">
+                                    3. What amenities are included in the room?
+                                </button>
+                                <button onClick={() => handleFAQClick(4)} className="faq-button">
+                                    4. Do you offer loyalty or reward programs?
+                                </button>
+                                <button onClick={() => handleFAQClick(5)} className="faq-button">
+                                    5. Do you have any special packages or promotions?
+                                </button>
+                                <button onClick={() => handleFAQClick(6)} className="faq-button">
+                                    6. Where is your hotel located?
+                                </button>
+                            </div>
+                        )}
+
+                        <div ref={chatEndRef} /> {/* Scroll anchor */}
+                    </div>
+
+                    {/* Chat input container outside the chat-box */}
+                    {!waitingForContactInfo && (
+                        <div className="chat-input-container">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Type your message here..."
+                                className="chat-input"
+                            />
+                            <button onClick={handleUserInput} className="send-button">Send</button>
+                        </div>
+                    )}
                 </div>
             </div>
-            
-            {/* Add Quick Action Buttons */}
-            <div className="quick-actions">
-                <button onClick={handleCheckAvailability} className="action-button">
-                    <span className="icon">🔍</span>
-                    Check Availability
-                </button>
-                <button onClick={handleReservation} className="action-button">
-                    <span className="icon">📅</span>
-                    Make Reservation
-                </button>
-                <button onClick={handleFAQs} className="action-button">
-                    <span className="icon">❓</span>
-                    FAQs
-                </button>
-            </div>
-
-            <div className="chat-box">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`chat-message ${msg.sender}`}>
-                        {msg.text}
-                    </div>
-                ))}
-
-                {/* Check-in Date Picker */}
-                {waitingForCheckIn && (
-                    <div className="date-picker">
-                        <DatePicker
-                            selected={checkInDate}
-                            onChange={(date) => {   
-                                if (date && date.getTime() !== checkInDate?.getTime()) {  // Check if the date is the same
-                                    setCheckInDate(date);
-                                    setMessages(prevMessages => [
-                                        ...prevMessages,
-                                        { sender: "user", text: `Check-in: ${date.toDateString()}` },
-                                        { sender: "bot", text: `Got it! Your check-in date is ${date.toDateString()}. Now, please select or enter your check-out date.` }
-                                    ]);
-                                    setCheckOutDate(null); // Reset check-out date when check-in is changed
-                                    setWaitingForCheckIn(false);
-                                    setWaitingForCheckOut(true);
-                                } else {
-                                    setMessages(prevMessages => [
-                                        ...prevMessages,
-                                        { sender: "bot", text: "Please select a different check-in date." }
-                                    ]);
-                                }
-                            }}
-                            placeholderText="Select check-in date"
-                            minDate={new Date()} // Ensure future dates only
-                        />
-                    </div>
-                )}
-
-                {/* Check-out Date Picker */}
-                {waitingForCheckOut && (
-                    <div className="date-picker">
-                        <DatePicker
-                            selected={checkOutDate}
-                            onChange={(date) => {
-                                if (date && date.getTime() !== checkOutDate?.getTime()) {  // Check if the date is the same
-                                    setCheckOutDate(date);
-                                    setMessages(prevMessages => [
-                                        ...prevMessages,
-                                        { sender: "user", text: `Check-out: ${date.toDateString()}` },
-                                        { sender: "bot", text: `Got it! Your check-out date is ${date.toDateString()}. Please confirm if the dates are correct.` }
-                                    ]);
-                                    setWaitingForCheckOut(false);
-                                    setWaitingForConfirmation(true);
-                                } else {
-                                    setMessages(prevMessages => [
-                                        ...prevMessages,
-                                        { sender: "bot", text: "Please select a different check-out date." }
-                                    ]);
-                                }
-                            }}
-                            placeholderText="Select check-out date"
-                            minDate={checkInDate || new Date()} // Ensure check-out is on or after check-in date
-                        />
-                    </div>
-                )}
-
-                {/* Confirmation for Dates */}
-                {waitingForConfirmation && (
-                    <div className="confirmation-buttons">
-                        <button onClick={() => processUserInput("Yes")}>Yes</button>
-                        <button onClick={() => processUserInput("No")}>No</button>
-                    </div>
-                )}
-
-                {/* Room Type Buttons */}
-                {waitingForRoomType && (
-                    <div className="room-type-buttons">
-                        <button onClick={() => handleRoomTypeSelection("Standard Room")}>Standard Room</button>
-                        <button onClick={() => handleRoomTypeSelection("Family Room")}>Family Room</button>
-                        <button onClick={() => handleRoomTypeSelection("Suite Room")}>Suite Room</button>
-                    </div>
-                )}
-
-                {waitingForRoomConfirmation && (
-                    <div className="confirmation-buttons">
-                        <button onClick={() => processUserInput("Yes")}>Yes</button>
-                        <button onClick={() => processUserInput("No")}>No</button>
-                    </div>
-                )}
-
-                {/* Number of Guests Input */}
-                {waitingForGuests && (
-                    <div className="guest-input">
-                        <input
-                            type="number"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Enter number of guests"
-                            min="1"
-                            max="6"
-                        />
-                        <button onClick={handleUserInput}>Submit</button>
-                    </div>
-                )}
-
-                                {/* Confirmation for Number of Guests */}
-                {waitingForGuestConfirmation && (
-                    <div className="confirmation-buttons">
-                        <button onClick={() => processUserInput("Yes")}>Yes</button>
-                        <button onClick={() => processUserInput("No")}>No</button>
-                    </div>
-                )}
-
-                {/* Booking Confirmation Buttons */}
-                {waitingForBookingConfirmation && (
-                    <div className="confirmation-buttons">
-                        <button onClick={() => processUserInput("Yes")}>Yes</button>
-                        <button onClick={() => processUserInput("No")}>No</button>
-                    </div>
-                )}
-
-                {/* Contact Information Input */}
-                {waitingForContactInfo && (
-                    <div className="contact-input">
-                        <input
-                            type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Enter your contact information..."
-                            className="chat-input"
-                        />
-                        <button onClick={handleUserInput} className="send-button">Submit</button>
-                    </div>
-                )}
-
-                {waitingForFinalConfirmation && (
-                    <div className="confirmation-buttons">
-                        <button onClick={() => processUserInput("Yes")}>Yes</button>
-                        <button onClick={() => processUserInput("No")}>No</button>
-                    </div>
-                )}
-
-                {showingFAQs && (
-                    <div className="faq-buttons">
-                        <button onClick={() => handleFAQClick(1)} className="faq-button">
-                            1. Do you accept pets?
-                        </button>
-                        <button onClick={() => handleFAQClick(2)} className="faq-button">
-                            2. Do you provide free Wi-Fi?
-                        </button>
-                        <button onClick={() => handleFAQClick(3)} className="faq-button">
-                            3. What amenities are included in the room?
-                        </button>
-                        <button onClick={() => handleFAQClick(4)} className="faq-button">
-                            4. Do you offer loyalty or reward programs?
-                        </button>
-                        <button onClick={() => handleFAQClick(5)} className="faq-button">
-                            5. Do you have any special packages or promotions?
-                        </button>
-                        <button onClick={() => handleFAQClick(6)} className="faq-button">
-                            6. Where is your hotel located?
-                        </button>
-                    </div>
-                )}
-
-                <div ref={chatEndRef} /> {/* Scroll anchor */}
-            </div>
-
-            {/* Chat input container outside the chat-box */}
-            {!waitingForContactInfo && (
-                <div className="chat-input-container">
-                    <input
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type your message here..."
-                        className="chat-input"
-                    />
-                    <button onClick={handleUserInput} className="send-button">Send</button>
-                </div>
-            )}
         </div>
     );
 };
