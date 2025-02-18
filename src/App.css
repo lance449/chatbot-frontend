@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  background-color: #f2f2f2; /* Pale Gray background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .App-logo {
@@ -14,7 +20,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #6A0DAD; /* Deep purple background */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,7 +31,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #FFD700; /* Gold color for links */
 }
 
 @keyframes App-logo-spin {
@@ -59,7 +65,7 @@
 .landing-page .start-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #6A0DAD; /* Deep purple background */
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -68,5 +74,4 @@
 .help-page, .about-page {
   text-align: center;
   padding: 50px;
-
 }

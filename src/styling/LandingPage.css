@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white; 
+}
 
 body {
   font-family: Arial, sans-serif;
@@ -10,7 +15,11 @@ body {
 .landing-page {
   text-align: center;
   padding: 50px;
+
   background-color: white;  /* Ensure the landing page also has a white background */
+=======
+  background-color: white;  
+
 }
 
 .landing-page nav {
@@ -73,6 +82,7 @@ body {
   margin: 20px 0;
 }
 
+
 .landing-page .buttons-container {
   margin-top: 20px;
 }
@@ -94,6 +104,7 @@ body {
 .landing-page .button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+
 }
 
 .landing-page .button:focus {
