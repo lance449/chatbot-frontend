@@ -243,33 +243,13 @@ const Chatbot = ({ hotel, onLogout }) => {
                     setContactInfo(prevInfo => ({ ...prevInfo, phone: userInput }));
                     setMessages(prevMessages => [
                         ...prevMessages,
-                        { sender: "bot", text: "Thank you! Please confirm your booking details. (Yes/No)" }
+                        { sender: "bot", text: "Thank you! Saving your booking..." }
                     ]);
                     setWaitingForContactInfo(false);
-                    setWaitingForFinalConfirmation(true);
-                } else {
-                    setMessages(prevMessages => [
-                        ...prevMessages,
-                        { sender: "bot", text: "Invalid phone number. Please enter a valid phone number." }
-                    ]);
-                }
-            }
-        } else if (waitingForFinalConfirmation) {
-            if (userInput.toLowerCase() === 'yes') {
-                console.log("Final contact info:", contactInfo); 
-                if (!contactInfo.name || !contactInfo.email || !contactInfo.phone) {
-                    console.error("Missing contact info:", contactInfo);
-                    setMessages(prevMessages => [
-                        ...prevMessages,
-                        { sender: "bot", text: "Please provide complete contact information to proceed with the booking." }
-                    ]);
-                    return;
-                }
-                setMessages(prevMessages => [
-                    ...prevMessages,
-                    { sender: "bot", text: "Saving your booking..." }
-                ]);
-                saveBookingToDatabase(checkInDate, checkOutDate, selectedRoomType, numGuests, contactInfo)
+                    saveBookingToDatabase(checkInDate, checkOutDate, selectedRoomType, numGuests, {
+                        ...contactInfo,
+                        phone: userInput
+                    })
                     .then(data => {
                         setMessages(prevMessages => [
                             ...prevMessages,
@@ -280,7 +260,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                                       `📅 Check-out: ${new Date(checkOutDate).toDateString()}\n` +
                                       `🏠 Room Type: ${selectedRoomType}\n` +
                                       `👥 Number of Guests: ${numGuests}\n` +
-                                      `📞 Contact: ${contactInfo.name}, ${contactInfo.email}, ${contactInfo.phone}\n` +
+                                      `📞 Contact: ${contactInfo.name}, ${contactInfo.email}, ${userInput}\n` +
                                       `🏢 Room Number: ${data.room_number}`
                             }
                         ]);
@@ -292,26 +272,18 @@ const Chatbot = ({ hotel, onLogout }) => {
                             { sender: "bot", text: `Error saving booking: ${error.message}` }
                         ]);
                     });
-            } else if (userInput.toLowerCase() === 'no') {
-                setMessages(prevMessages => [
-                    ...prevMessages,
-                    { sender: "bot", text: "Okay, let's start over. Please select your check-in date." }
-                ]);
-                resetAllStates();
-                setWaitingForCheckIn(true);
-            } else {
-                setMessages(prevMessages => [
-                    ...prevMessages,
-                    { sender: "bot", text: "Sorry, I didn't understand that. Please respond with 'Yes' or 'No'." }
-                ]);
+                } else {
+                    setMessages(prevMessages => [
+                        ...prevMessages,
+                        { sender: "bot", text: "Invalid phone number. Please enter a valid phone number." }
+                    ]);
+                }
             }
         }
     };    
 
     const saveBookingToDatabase = async (checkIn, checkOut, roomType, guests, contactInfo) => {
         try {
-
-    
             const requestData = {
                 hotel_id: hotel.id,
                 check_in: new Date(checkIn).toISOString().split('T')[0], 

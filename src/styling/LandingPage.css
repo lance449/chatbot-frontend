@@ -1,20 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white; 
+}
 
 .landing-page {
   text-align: center;
   padding: 50px;
+  background-color: white;  
+}
+
+.landing-page nav {
+  background: white;
+  padding: 15px 0;
 }
 
 .landing-page nav ul {
   list-style-type: none;
   padding: 0;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  flex-wrap: wrap;
 }
 
 .landing-page nav ul li {
-  display: inline;
-  margin: 0 10px;
+  margin: 0 15px;
+}
+
+.landing-page nav ul li a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px 15px;
+  transition: 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.landing-page nav ul li a:hover {
+  background: #007bff;
+  color: white;
 }
 
 .landing-page nav ul li.auth-link {
@@ -24,7 +52,7 @@
 .landing-page nav ul li .logo {
   font-family: 'Archivo Black', sans-serif;
   font-size: 24px;
-  color: #000;
+  color: #333;
   text-decoration: none;
 }
 
@@ -32,11 +60,25 @@
   margin-top: 50px;
 }
 
-.landing-page .start-button {
+.landing-page .buttons-container {
+  margin-top: 20px;
+}
+
+.landing-page .button {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px 25px;
+  margin: 10px;
   background-color: #007bff;
   color: white;
   text-decoration: none;
   border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.landing-page .button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
