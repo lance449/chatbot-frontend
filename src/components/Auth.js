@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styling/Auth.css";
+import logo from '../assets/logo.png';
 
 const Auth = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
@@ -49,112 +50,119 @@ const Auth = ({ onLogin }) => {
   };
 
   return (
-    <div className="auth-container">
-      <header>
-        <h1 className="heading">{isRegister ? "Register" : "Login"}</h1>
-        <p className="title">{isRegister ? "Create your account" : "Sign in to your account"}</p>
-      </header>
-      <div className="tab-bar">
-        <button className={`tab ${!isRegister ? "active" : ""}`} onClick={() => setIsRegister(false)}>Login</button>
-        <button className={`tab ${isRegister ? "active" : ""}`} onClick={() => setIsRegister(true)}>Register</button>
+    <>
+      <div className="logo-container">
+        <Link to="/">
+          <img src={logo} alt="RESBOT Logo" />
+        </Link>
       </div>
-      <div className="form-section">
-        {!isRegister ? (
-          <div className="login-box">
-            <form onSubmit={handleSubmit} className="auth-form">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-                className="ele"
-                required
-              />
-              <div className="password-input">
+      <div className="auth-container">
+        <header>
+          <h1 className="heading">{isRegister ? "Register" : "Login"}</h1>
+          <p className="title">{isRegister ? "Create your account" : "Sign in to your account"}</p>
+        </header>
+        <div className="tab-bar">
+          <button className={`tab ${!isRegister ? "active" : ""}`} onClick={() => setIsRegister(false)}>Login</button>
+          <button className={`tab ${isRegister ? "active" : ""}`} onClick={() => setIsRegister(true)}>Register</button>
+        </div>
+        <div className="form-section">
+          {!isRegister ? (
+            <div className="login-box">
+              <form onSubmit={handleSubmit} className="auth-form">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
                   onChange={handleChange}
                   className="ele"
                   required
                 />
-                <span
-                  className="eye-icon"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  👁️
-                </span>
-              </div>
-              <button type="submit" className="clkbtn">Login</button>
-            </form>
-          </div>
-        ) : (
-          <div className="signup-box">
-            <form onSubmit={handleSubmit} className="auth-form">
-              <input
-                type="text"
-                name="first_name"
-                placeholder="First Name"
-                onChange={handleChange}
-                className="ele"
-                required
-              />
-              <input
-                type="text"
-                name="last_name"
-                placeholder="Last Name"
-                onChange={handleChange}
-                className="ele"
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-                className="ele"
-                required
-              />
-              <div className="password-input">
+                <div className="password-input">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    className="ele"
+                    required
+                  />
+                  <span
+                    className="eye-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    👁️
+                  </span>
+                </div>
+                <button type="submit" className="clkbtn">Login</button>
+              </form>
+            </div>
+          ) : (
+            <div className="signup-box">
+              <form onSubmit={handleSubmit} className="auth-form">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
                   onChange={handleChange}
                   className="ele"
                   required
                 />
-                <span
-                  className="eye-icon"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  👁️
-                </span>
-              </div>
-              <div className="password-input">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
+                  type="text"
+                  name="last_name"
+                  placeholder="Last Name"
                   onChange={handleChange}
                   className="ele"
                   required
                 />
-                <span
-                  className="eye-icon"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  👁️
-                </span>
-              </div>
-              <button type="submit" className="clkbtn">Register</button>
-            </form>
-          </div>
-        )}
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  onChange={handleChange}
+                  className="ele"
+                  required
+                />
+                <div className="password-input">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    className="ele"
+                    required
+                  />
+                  <span
+                    className="eye-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    👁️
+                  </span>
+                </div>
+                <div className="password-input">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    onChange={handleChange}
+                    className="ele"
+                    required
+                  />
+                  <span
+                    className="eye-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    👁️
+                  </span>
+                </div>
+                <button type="submit" className="clkbtn">Register</button>
+              </form>
+            </div>
+          )}
+        </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-    </div>
+    </>
   );
 };
 

@@ -1,15 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../styling/AboutPage.css";
+import logo from '../assets/logo.png';
+import teamMember1 from '../assets/formal3.jpg';
+import teamMember2 from '../assets/formal2.jpg'; 
+import teamMember3 from '../assets/formal1.jpg'; 
 
 const AboutPage = () => {
   return (
     <div className="about-page">
       <nav>
         <ul>
-          <li>
-            <Link to="/" className="logo">
-              RESBOT
+          <li className="logo">
+            <Link to="/">
+              <img src={logo} alt="RESBOT Logo" className="logo-image" />
             </Link>
           </li>
           <li><Link to="/about" className="active-link">About</Link></li>
@@ -29,15 +33,18 @@ const AboutPage = () => {
         <h2>Meet Our Team</h2>
         <div className="team-list">
           <div className="team-member">
+            <img src={teamMember1} alt="Lance Melendrez" className="team-image" />
             <h3>Lance Melendrez</h3>
             <p>Programmer</p>
           </div>
           <div className="team-member">
+            <img src={teamMember2} alt="John Robert Rogel" className="team-image" />
             <h3>John Robert Rogel</h3>
             <p>Designer</p>
           </div>
           <div className="team-member">
-            <h3>Vincent Cimatu</h3>
+            <img src={teamMember3} alt="Vince Cimatu" className="team-image" />
+            <h3>Vince Cimatu</h3>
             <p>Researcher</p>
           </div>
         </div>

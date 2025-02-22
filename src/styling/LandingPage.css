@@ -41,7 +41,7 @@ body {
 }
 
 .landing-page nav ul li a:hover {
-  background: #007bff;
+  background: #5D3FD3;
   color: white;
 }
 
@@ -55,11 +55,10 @@ body {
 }
 
 .landing-page nav ul li .logo img {
-  height: 90px; /* Adjust the height as needed */
+  height: 90px; 
   width: auto;
 }
 
-/* Remove hover effect for the logo */
 .landing-page nav ul li .logo:hover {
   background: none;
   color: inherit;
@@ -88,7 +87,7 @@ body {
   display: inline-block;
   padding: 12px 25px;
   margin: 10px;
-  background-color: #007bff;
+  background-color: #5D3FD3;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -99,7 +98,7 @@ body {
 }
 
 .landing-page .button:hover {
-  background-color: #0056b3;
+  background-color: #5D3FD3;
   transform: scale(1.05);
 }
 
@@ -133,7 +132,7 @@ body {
 
 .feature-item h3 {
   font-size: 22px;
-  color: #007bff;
+  color: #5D3FD3;
 }
 
 .feature-item p {

@@ -53,6 +53,8 @@ const Chatbot = ({ hotel, onLogout }) => {
         setInput(""); 
     };
 
+    const [showingReservationPolicy, setShowingReservationPolicy] = useState(false);
+
     const processUserInput = (userInput) => {
         if (waitingForCheckIn) {
             setCheckInDate(userInput);
@@ -261,15 +263,51 @@ const Chatbot = ({ hotel, onLogout }) => {
                             ...prevMessages,
                             { 
                                 sender: "bot", 
-                                text: `Your booking has been confirmed! Thank you for choosing our hotel.\n\n` +
-                                      `📅 Check-in: ${new Date(checkInDate).toDateString()}\n` +
-                                      `📅 Check-out: ${new Date(checkOutDate).toDateString()}\n` +
-                                      `🏠 Room Type: ${selectedRoomType}\n` +
-                                      `👥 Number of Guests: ${numGuests}\n` +
-                                      `📞 Contact: ${contactInfo.name}, ${contactInfo.email}, ${userInput}\n` +
-                                      `🏢 Room Number: ${data.room_number}`
+                                text: "✅ Your booking has been confirmed! Thank you for choosing our hotel."
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `📅 Check-in: ${new Date(checkInDate).toDateString()}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `📅 Check-out: ${new Date(checkOutDate).toDateString()}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `🏠 Room Type: ${selectedRoomType}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `👥 Number of Guests: ${numGuests}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: "📞 Contact Information:"
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `   - Name: ${contactInfo.name}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `   - Email: ${contactInfo.email}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `   - Phone: ${userInput}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: `🏢 Room Number: ${data.room_number}`
+                            },
+                            { 
+                                sender: "bot", 
+                                text: "🎉 Enjoy your stay! If you need assistance, feel free to ask."
                             }
                         ]);
+            
+                        
                         resetAllStates();
                     })
                     .catch(error => {
@@ -365,33 +403,44 @@ const Chatbot = ({ hotel, onLogout }) => {
                 if (!Array.isArray(data) || data.length === 0) {
                     setMessages(prevMessages => [
                         ...prevMessages,
-                        { sender: "bot", text: "No rooms available for these dates. Please select new check-in and check-out dates." }
+                        { sender: "bot", text: "❌ No rooms available for these dates. Please select new check-in and check-out dates." }
                     ]);
                     resetDateSelection();
                 } else {
                     const price = data[0].price;
-                    const roomList = data.map(room => `Room ${room.id} (${room.room_type})`).join(", ");
-                    
-
+                    const roomList = data.map(room => `🏠 Room ${room.id} (${room.room_type})`).join("\n");
+                
                     setMessages(prevMessages => [
                         ...prevMessages,
                         { 
-                            sender: "bot", 
-                            text: `📍 Available Rooms:\n${roomList}\n\n💰 Price per night: $${price}`
+                            sender: "bot",  text: `📍 Available Rooms:\n${roomList}\n\n💰 **Price per night:** $${price}`
                         },
                         {
-                            sender: "bot",
-                            text: "Here are your booking details for confirmation:\n\n" +
-                                  `📅 Check-in: ${checkInDate.toDateString()}\n` +
-                                  `📅 Check-out: ${checkOutDate.toDateString()}\n` +
-                                  `🏠 Room Type: ${selectedRoomType}\n` +
-                                  `👥 Number of Guests: ${numGuests}\n` +
-                                  `💰 Price per night: $${price}\n\n` +
-                                  "Are these details correct? (Yes/No)"
+                            sender: "bot", text: "📝 Booking Confirmation:"
+                        },
+                        { 
+                            sender: "bot", text: `📅 Check-in: ${checkInDate.toDateString()}`
+                        },
+                        { 
+                            sender: "bot",  text: `📅 Check-out: ${checkOutDate.toDateString()}`
+                        },
+                        { 
+                            sender: "bot",  text: `🏠 Room Type: ${selectedRoomType}`
+                        },
+                        { 
+                            sender: "bot", text: `👥 Number of Guests: ${numGuests}`
+                        },
+                        { 
+                            sender: "bot",  text: `💰 Price per night: $${price}`
+                        },
+                        { 
+                            sender: "bot",  text: "✅ Are these details correct? (Yes/No)"
                         }
                     ]);
+                    
                     setWaitingForBookingConfirmation(true);
                 }
+                
             } catch (jsonError) {
                 console.error("Invalid JSON response:", text);
                 setMessages(prevMessages => [
@@ -535,6 +584,21 @@ const Chatbot = ({ hotel, onLogout }) => {
         ]);
     };
 
+    const handleReservationPolicy = () => {
+        setShowingReservationPolicy(true);
+        setShowingFAQs(false);
+        setMessages(prevMessages => [
+            ...prevMessages,
+            { sender: "bot", type: "policy", text: "Reservation Policy" },
+            { sender: "bot", type: "policy", text: "📌 Booking Guarantee: A valid credit card or deposit is required to confirm the reservation." },
+            { sender: "bot", type: "policy", text: "🚫 Cancellation & No-show: Free cancellation up to 24 hours before check-in. Late cancellations or no-shows incur one night's charge." },
+            { sender: "bot", type: "policy", text: "💰 Payment: Full payment upon check-in. Accepted: cash, credit/debit cards." },
+            { sender: "bot", type: "policy", text: "🆔 Guests & ID: All guests must present a valid ID. Minimum check-in age: 18." },
+            { sender: "bot", type: "policy", text: "💥 Damages: Guests are responsible for any damages caused." },
+            { sender: "bot", type: "policy", text: "🔍 Lost & Found: The hotel is not responsible for lost items but will assist in recovery efforts." }
+        ]);
+    };
+    
     return (
         <div>
             <div className="profile-section">
@@ -564,11 +628,19 @@ const Chatbot = ({ hotel, onLogout }) => {
                             <span className="icon">❓</span>
                             FAQs
                         </button>
+                        <button onClick={handleReservationPolicy} className="action-button">
+                            <span className="icon">📜</span>
+                            Reservation Policy
+                        </button>
                     </div>
                     <div className="chat-box">
                         {messages.map((msg, index) => (
-                            <div key={index} className={`chat-message ${msg.sender}`}>
-                                {msg.text}
+                            <div key={index} className={`chat-message ${msg.sender} ${msg.type === "policy" ? "policy-message" : ""}`}>
+                                {msg.type === "policy" ? (
+                                    <div className="policy-box">{msg.text}</div>
+                                ) : (
+                                    msg.text
+                                )}
                             </div>
                         ))}
                         {/* Check-in Date Picker */}

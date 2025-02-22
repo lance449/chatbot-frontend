@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../styling/LandingPage.css";
-import logo from '../assets/logo.png'; // Import the logo image
+import logo from '../assets/logo.png';
 
 const LandingPage = () => {
   return (
