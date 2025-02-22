@@ -97,12 +97,12 @@ nav .logo img {
   transition: all 0.3s ease-in-out;
 }
 
-/* Improved Hover Effect */
+
 .faq-item:hover {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Smooth FAQ Expansion */
+
 .faq-item p {
   opacity: 0;
   max-height: 0;
@@ -129,7 +129,6 @@ nav .logo img {
   margin-top: 10px;
 }
 
-/* Booking Process Section */
 .booking-process {
   margin-top: 50px;
   text-align: center;
@@ -188,7 +187,7 @@ nav .logo img {
   font-size: 18px;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .booking-process {
     padding: 30px 15px;
