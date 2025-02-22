@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import { useNavigate } from 'react-router-dom';  
 import "../styling/HotelSelection.css";
 
 
@@ -13,12 +13,12 @@ const hotels = [
 
 const HotelSelection = ({ setHotel }) => {
     const [selectedHotel, setSelectedHotel] = useState(null);
-    const navigate = useNavigate();  // Initialize the navigate function
+    const navigate = useNavigate();  
 
     const handleHotelClick = (hotel) => {
-        setHotel(hotel);  // Set the selected hotel in the parent component
-        localStorage.setItem("selectedHotel", JSON.stringify(hotel));  // Store the hotel in localStorage
-        navigate('/chatbot');  // Redirect to the Chatbot page after selecting a hotel
+        setHotel(hotel);  
+        localStorage.setItem("selectedHotel", JSON.stringify(hotel));  
+        navigate('/chatbot');  
     };
 
     return (
@@ -28,7 +28,7 @@ const HotelSelection = ({ setHotel }) => {
                 <div key={hotel.id} className="hotel-card">
                     <img src={hotel.logo} alt={hotel.name} />
                     <h3>{hotel.name}</h3>
-                    <button onClick={() => handleHotelClick(hotel)}>Select</button>  {/* Use handleHotelClick */}
+                    <button onClick={() => handleHotelClick(hotel)}>Select</button>  
                     <button onClick={() => setSelectedHotel(hotel)}>Details</button>
                 </div>
             ))}

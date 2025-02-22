@@ -20,19 +20,19 @@ const Chatbot = ({ hotel, onLogout }) => {
     const [input, setInput] = useState("");
     const [waitingForCheckIn, setWaitingForCheckIn] = useState(true);
     const [waitingForCheckOut, setWaitingForCheckOut] = useState(false);
-    const [waitingForConfirmation, setWaitingForConfirmation] = useState(false); // For confirmation step
+    const [waitingForConfirmation, setWaitingForConfirmation] = useState(false); 
     const [waitingForRoomType, setWaitingForRoomType] = useState(false);
-    const [waitingForGuests, setWaitingForGuests] = useState(false); // For number of guests
+    const [waitingForGuests, setWaitingForGuests] = useState(false); 
     const [checkInDate, setCheckInDate] = useState(null);
     const [checkOutDate, setCheckOutDate] = useState(null);
     const [selectedRoomType, setSelectedRoomType] = useState(null);
-    const [numGuests, setNumGuests] = useState(null); // Track the number of guests
+    const [numGuests, setNumGuests] = useState(null); 
     const [waitingForRoomConfirmation, setWaitingForRoomConfirmation] = useState(false); 
     const chatEndRef = useRef(null);
     const [waitingForGuestConfirmation, setWaitingForGuestConfirmation] = useState(false);
     const [waitingForBookingConfirmation, setWaitingForBookingConfirmation] = useState(false);
     const [waitingForContactInfo, setWaitingForContactInfo] = useState(false);
-    const [contactStep, setContactStep] = useState(0); // 0: name, 1: email, 2: phone
+    const [contactStep, setContactStep] = useState(0);
     const [contactInfo, setContactInfo] = useState({
         name: '',
         email: '',
@@ -146,7 +146,6 @@ const Chatbot = ({ hotel, onLogout }) => {
 
             const roomType = selectedRoomType.replace(' Room', '');
 
-            // Set capacity ranges based on room type
             switch(roomType) {
                 case 'Standard':
                     minCapacity = 1;
@@ -667,7 +666,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                                         }
                                     }}
                                     placeholderText="Select check-in date"
-                                    minDate={new Date()} // Ensure future dates only
+                                    minDate={new Date()} 
                                 />
                             </div>
                         )}
@@ -695,7 +694,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                                         }
                                     }}
                                     placeholderText="Select check-out date"
-                                    minDate={checkInDate || new Date()} // Ensure check-out is on or after check-in date
+                                    minDate={checkInDate || new Date()}
                                 />
                             </div>
                         )}
@@ -739,7 +738,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                             </div>
                         )}
 
-                                        {/* Confirmation for Number of Guests */}
+                        {/* Confirmation for Number of Guests */}
                         {waitingForGuestConfirmation && (
                             <div className="confirmation-buttons">
                                 <button onClick={() => processUserInput("Yes")}>Yes</button>
@@ -799,7 +798,7 @@ const Chatbot = ({ hotel, onLogout }) => {
                             </div>
                         )}
 
-                        <div ref={chatEndRef} /> {/* Scroll anchor */}
+                        <div ref={chatEndRef} /> 
                     </div>
 
                     {/* Chat input container outside the chat-box */}

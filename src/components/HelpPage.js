@@ -17,7 +17,7 @@ const HelpPage = () => {
         <ul>
           <li className="logo">
             <Link to="/">
-              <img src={logo} alt="RESBOT Logo" className="logo-image" /> {/* Use the logo image */}
+              <img src={logo} alt="RESBOT Logo" className="logo-image" /> 
             </Link>
           </li>
           <li><Link to="/about">About</Link></li>
